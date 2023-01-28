@@ -4,7 +4,8 @@ import createEmotionServer from "@emotion/server/create-instance";
 import theme from "@/config/theme";
 import createEmotionCache from "@/config/createEmotionCache";
 
-export default class MyDocument extends Document {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default class MyDocument extends Document<any> {
   render() {
     return (
       <Html lang="pt-BR">
@@ -41,7 +42,8 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      enhanceApp: (App: any) =>
         function EnhanceApp(props) {
           return <App emotionCache={cache} {...props} />;
         },
