@@ -18,5 +18,16 @@
     "titleBar.inactiveBackground": "#03143899",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#031438"
+  "peacock.color": "#031438",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }
