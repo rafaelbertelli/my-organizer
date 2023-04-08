@@ -1,7 +1,7 @@
-import { IRoute } from "@/routes";
+import { RouteProps } from "@/routes";
 import Link from "next/link";
 
-export default function LinkSingle(props: IRoute) {
+export default function LinkSingle(props: RouteProps) {
   return (
     <Link
       href={props.path}

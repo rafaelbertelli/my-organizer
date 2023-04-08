@@ -1,4 +1,4 @@
-export interface IRoute {
+export type RouteProps = {
   id: string;
   name: string;
   visible: boolean;
@@ -6,7 +6,7 @@ export interface IRoute {
   icon: React.ReactNode;
 }
 
-export const ROUTES_PRIVATE: IRoute[] = [
+export const ROUTES_PRIVATE: RouteProps[] = [
   {
     id: "home",
     name: "Home",
