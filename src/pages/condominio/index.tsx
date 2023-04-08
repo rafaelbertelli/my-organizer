@@ -2,9 +2,8 @@
 import type { ReactElement } from 'react'
 import type { NextPageWithLayout } from '../_app'
 
-import Condominium from '@/components/condominium'
 import Layout from '@/components/layout'
-// import NestedLayout from '@/components/nested-layout'
+import Condominium from '@/components/page/condominio'
 
 const Condominio: NextPageWithLayout = () => {
   return <Condominium />
@@ -13,7 +12,6 @@ const Condominio: NextPageWithLayout = () => {
 Condominio.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
-      {/* <NestedLayout>{page}</NestedLayout> */}
       {page}
     </Layout>
   )

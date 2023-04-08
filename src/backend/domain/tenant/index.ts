@@ -6,7 +6,7 @@ export type TenantProps = {
 
 export type GetTenantsHttp = {
   success: boolean
-  data?: Tenant[]
+  result?: Tenant[]
   error?: any
 }
 

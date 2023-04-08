@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />)
+      <Component {...pageProps} />
     </QueryClientProvider>
   )
 }

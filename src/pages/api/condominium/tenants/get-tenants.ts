@@ -22,7 +22,7 @@ export default async function handler(
     const result = tenants.map(t =>
       new Tenant({ id: t._id, tenant: t.tenant, apartment: t.apartment }))
 
-    return res.status(200).json({ success: true, data: result })
+    return res.status(200).json({ success: true, result })
   } catch (error) {
     return res.status(400).json({ success: false, error })
   }
