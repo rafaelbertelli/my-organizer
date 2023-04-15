@@ -1,4 +1,11 @@
-import { FaAccusoft, FaBroom, FaBuilding, FaHome, FaPeopleArrows, FaPeopleCarry } from "react-icons/fa";
+import {
+  FaAccusoft,
+  FaBroom,
+  FaBuilding,
+  FaHome,
+  FaPeopleArrows,
+  FaPeopleCarry,
+} from "react-icons/fa";
 
 export type RouteProps = {
   id: string;
@@ -21,16 +28,24 @@ export const ROUTES_PRIVATE: RouteProps[] = [
     id: "condominium",
     name: "Condomínio",
     visible: true,
-    path: "/condominio",
+    path: "",
     icon: <FaBuilding />,
-
-  },
-  {
-    id: "condominium-cleaning",
-    name: "Limpeza",
-    visible: true,
-    path: "/condominio/limpeza",
-    icon: <FaBroom />,
+    children: [
+      {
+        id: "residents",
+        name: "Moradores",
+        visible: true,
+        path: "/condominio",
+        icon: <FaBuilding />,
+      },
+      {
+        id: "condominium-cleaning",
+        name: "Limpeza",
+        visible: true,
+        path: "/condominio/limpeza",
+        icon: <FaBroom />,
+      },
+    ],
   },
 
   {
@@ -55,7 +70,8 @@ export const ROUTES_PRIVATE: RouteProps[] = [
         icon: <FaPeopleArrows />,
       },
     ],
-  }, {
+  },
+  {
     id: "ex11",
     name: "Ex2",
     visible: true,
