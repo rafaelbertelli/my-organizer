@@ -18,7 +18,10 @@ export default function Condominium() {
     setShowModalConfirmation(!showModalConfirmation)
   }
 
-  const handleModalRegister = () => setShowModalRegister(!showModalRegister)
+  const handleModalRegister = (tenant?: Tenant) => {
+    tenant && setActiveTenant(tenant)
+    setShowModalRegister(!showModalRegister)
+  }
 
   const handleRegisterTenant = async (tenant: Tenant, cb: () => void) => {
     await registerTenant(tenant)
@@ -70,7 +73,7 @@ export default function Condominium() {
                           {t.apartment}
                         </Table.Cell>
                         <Table.Cell>
-                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => { }}>
+                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => handleModalRegister(t)}>
                             Editar
                           </button>
                           {" | "}
@@ -87,7 +90,7 @@ export default function Condominium() {
           )}
 
           <div className="flex flex-wrap gap-2 justify-end">
-            <Button onClick={handleModalRegister}>
+            <Button onClick={() => handleModalRegister()}>
               Novo Cadastro
             </Button>
           </div>
@@ -96,7 +99,10 @@ export default function Condominium() {
             show={showModalRegister}
             handleModal={handleModalRegister}
           >
-            <RegisterForm register={(tenant: Tenant, cb: () => void) => handleRegisterTenant(tenant, cb)} />
+            <RegisterForm
+              register={(tenant: Tenant, cb: () => void) => handleRegisterTenant(tenant, cb)}
+              payload={activeTenant}
+            />
           </WrapperModal>
 
           <PopUpModal

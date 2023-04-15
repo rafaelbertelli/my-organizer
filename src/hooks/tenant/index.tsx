@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 export default function useTenant() {
   const URL = {
     GET: '/condominium/tenants/get-tenants',
+    PUT: '/condominium/tenants/update-tenant',
     POST: '/condominium/tenants/create-tenant',
     DELETE: '/condominium/tenants/delete-tenant'
   }
@@ -21,11 +22,10 @@ export default function useTenant() {
     return response.data;
   }
 
-  const postMutation = useMutation(async (tenant: Tenant) => {
-    const result = await api.post<SuccessHttp<any>>(URL.POST, { tenant });
-    console.log('...........', result)
-    return result
-  }, {
+  const putMutation = useMutation(
+    async (tenant: Tenant) => {
+      return await api.put<SuccessHttp<any>>(URL.PUT, { tenant })
+    }, {
     onSuccess: () => {
       reactQueryClient.invalidateQueries(QUERY_KEY.GET)
     },
@@ -34,11 +34,10 @@ export default function useTenant() {
     },
   })
 
-  const deleteMutation = useMutation(async (tenant: Tenant) => {
-    const result = await api.delete<SuccessHttp<any>>(`${URL.DELETE}/${tenant?.id}`);
-    console.log(result)
-    return result
-  }, {
+  const postMutation = useMutation(
+    async (tenant: Tenant) => {
+      return await api.post<SuccessHttp<any>>(URL.POST, { tenant })
+    }, {
     onSuccess: () => {
       reactQueryClient.invalidateQueries(QUERY_KEY.GET)
     },
@@ -46,12 +45,30 @@ export default function useTenant() {
       console.log("ERRRRRO", err)
     },
   })
+
+  const deleteMutation = useMutation(
+    async (tenant: Tenant) => {
+      return await api.delete<SuccessHttp<any>>(`${URL.DELETE}/${tenant?.id}`);
+    }, {
+    onSuccess: () => {
+      reactQueryClient.invalidateQueries(QUERY_KEY.GET)
+    },
+    onError: (err) => {
+      console.log("ERRRRRO", err)
+    },
+  })
+
 
   // Initial loading
   const { data, isError, isLoading } = useQuery(QUERY_KEY.GET, getMutation)
 
+
   // Exposable
   const registerTenant = async (tenant: Tenant) => {
+    if (tenant.id) {
+      return await putMutation.mutateAsync(tenant)
+    }
+
     return await postMutation.mutateAsync(tenant)
   }
 
