@@ -1,23 +1,17 @@
-export type TenantProps = {
+type TenantProps = {
   id?: string
-  tenant: string
+  name: string
   apartment: string
-}
-
-export type GetTenantsHttp = {
-  success: boolean
-  result?: Tenant[]
-  error?: any
 }
 
 export class Tenant {
   readonly id: string | undefined
-  readonly tenant: string
+  readonly name: string
   readonly apartment: string
 
   constructor(props: TenantProps) {
     this.id = props.id
-    this.tenant = props.tenant
+    this.name = props.name
     this.apartment = props.apartment
   }
 }

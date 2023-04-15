@@ -1,65 +1,114 @@
-import { GetTenantsHttp } from "@/backend/domain/tenant";
-import api from "@/service/api";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-
-
-async function getTenants() {
-  const response = await api.get<GetTenantsHttp>("/condominium/tenants/get-tenants");
-  return response.data;
-}
-
+import { Tenant } from "@/backend/domain/tenant";
+import RegisterForm from "@/components/condominio/register-form";
+import PopUpModal from "@/components/ui/modal/popup-modal";
+import WrapperModal from "@/components/ui/modal/wrapper-modal";
+import useTenant from "@/hooks/tenant";
+import { Button, Table } from "flowbite-react";
+import { useState } from "react";
 
 export default function Condominium() {
-  const { data, isError, isLoading } = useQuery({ queryKey: ['tenants'], queryFn: getTenants })
-  const dataLength = data?.result?.length || 0
+  const [showModalConfirmation, setShowModalConfirmation] = useState<boolean>(false)
+  const [showModalRegister, setShowModalRegister] = useState<boolean>(false)
+  const [activeTenant, setActiveTenant] = useState<Tenant | null>(null)
 
-  useEffect(() => {
-    console.log(data?.result)
-  }, [data])
+  const { stateTenant, deleteTenant, registerTenant } = useTenant()
+
+  const handleModalConfirmation = (tenant: Tenant | null) => {
+    setActiveTenant(tenant)
+    setShowModalConfirmation(!showModalConfirmation)
+  }
+
+  const handleModalRegister = () => setShowModalRegister(!showModalRegister)
+
+  const handleRegisterTenant = async (tenant: Tenant, cb: () => void) => {
+    await registerTenant(tenant)
+    setShowModalRegister(false)
+    cb && cb()
+  }
+
+  const handleDeleteTenant = (cb: () => void) => {
+    deleteTenant(activeTenant)
+    setShowModalConfirmation(false)
+    cb && cb()
+  }
+
+  const pageReady = Boolean(!stateTenant.isError && !stateTenant.isLoading)
 
   return (
-    <div>
-      {isError && <p>Erro!</p>}
-      {isLoading && <p>carregando</p>}
-      {data && (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Condômino
-                </th>
-                <th scope="col" className="px-6 py-3 text-center">
-                  Apartamento
-                </th>
-                <th scope="col" className="px-6 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.result?.map((t, index) => {
-                const lastItem = (index + 1) === dataLength
-                const useClass = lastItem ? 'bg-white dark:bg-gray-800' : 'bg-white border-b dark:bg-gray-800 dark:border-gray-700'
-                return (
-                  <tr key={t.id} className={`${useClass}`}>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {t.tenant}
-                    </th>
-                    <td className="px-6 py-4 text-center">
-                      {t.apartment}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                      {" | "}
-                      <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Excluir</a>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+    <>
+      {stateTenant.isError && <p>Erro!</p>}
+
+      {stateTenant.isLoading && <p>carregando</p>}
+
+      {pageReady && (
+        <>
+          {stateTenant.data && (
+            <div className="pb-4">
+              <Table hoverable={true}>
+                <Table.Head>
+                  <Table.HeadCell>
+                    Condômino
+                  </Table.HeadCell>
+                  <Table.HeadCell>
+                    Apartamento
+                  </Table.HeadCell>
+                  <Table.HeadCell>
+                    <span className="sr-only">
+                      Actions
+                    </span>
+                  </Table.HeadCell>
+                </Table.Head>
+
+                <Table.Body className="divide-y">
+                  {stateTenant.data.result?.map((t) => {
+                    return (
+                      <Table.Row key={t.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                          {t.name}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {t.apartment}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => { }}>
+                            Editar
+                          </button>
+                          {" | "}
+                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => handleModalConfirmation(t)}>
+                            Excluir
+                          </button>
+                        </Table.Cell>
+                      </Table.Row>
+                    )
+                  })}
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-2 justify-end">
+            <Button onClick={handleModalRegister}>
+              Novo Cadastro
+            </Button>
+          </div>
+
+          <WrapperModal
+            show={showModalRegister}
+            handleModal={handleModalRegister}
+          >
+            <RegisterForm register={(tenant: Tenant, cb: () => void) => handleRegisterTenant(tenant, cb)} />
+          </WrapperModal>
+
+          <PopUpModal
+            show={showModalConfirmation}
+            handleModal={handleModalConfirmation}
+            message="Você tem certeza que quer excluir este condômino?"
+            confirmMessage="Sim, tenho certeza"
+            cancelMessage="Não, cancelar"
+            confirmAction={(cb: () => void) => handleDeleteTenant(cb)}
+          />
+        </>
       )}
-    </div>
+    </>
   )
 }
