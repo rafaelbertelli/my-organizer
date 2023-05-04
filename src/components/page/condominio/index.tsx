@@ -7,8 +7,7 @@ import { useState } from "react";
 import RegisterForm from "./fragments/register-form";
 
 export default function Condominium() {
-  const [showModalConfirmation, setShowModalConfirmation] =
-    useState<boolean>(false);
+  const [showModalConfirmation, setShowModalConfirmation] = useState<boolean>(false);
   const [showModalRegister, setShowModalRegister] = useState<boolean>(false);
   const [activeTenant, setActiveTenant] = useState<Tenant | null>(null);
 
@@ -20,8 +19,8 @@ export default function Condominium() {
   };
 
   const handleModalRegister = (tenant?: Tenant) => {
-    tenant && setActiveTenant(tenant);
-    setShowModalRegister(!showModalRegister);
+    setActiveTenant(tenant ?? null);
+    setShowModalRegister(!showModalRegister)
   };
 
   const handleRegisterTenant = async (tenant: Tenant, cb: () => void) => {
