@@ -1,10 +1,10 @@
 import { Tenant } from "@/backend/domain/tenant";
 import PopUpModal from "@/components/ui/modal/popup-modal";
 import WrapperModal from "@/components/ui/modal/wrapper-modal";
-import useTenant from "@/hooks/tenant";
 import { Button, Table } from "flowbite-react";
 import { useState } from "react";
 import RegisterForm from "./fragments/register-form";
+import useTenant from "./useTenant";
 
 export default function Condominium() {
   const [showModalConfirmation, setShowModalConfirmation] = useState<boolean>(false);

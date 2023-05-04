@@ -1,19 +1,10 @@
-import { Card, Checkbox, Table } from "flowbite-react";
+import { Checkbox, Table } from "flowbite-react";
+import Schedule from "./fragments/schedule/intex";
 
 export default function Cleaning() {
   return (
     <>
-      <Card className="mb-4">
-        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex justify-between">
-          <span>Próxima faxina a ser realizada em:</span>
-          <span>28/04/2023</span>
-        </h5>
-        <div>
-          <p>Marly</p>
-          <p>R$ 120,00</p>
-          <p>A pagar</p>
-        </div>
-      </Card>
+      <Schedule />
 
       <Table hoverable={true}>
         <Table.Head>
@@ -55,7 +46,6 @@ export default function Cleaning() {
             </Table.Cell>
             <Table.Cell>White</Table.Cell>
             <Table.Cell>Laptop PC</Table.Cell>
-            <Table.Cell>$1999</Table.Cell>
             <Table.Cell>
               <a
                 href="/tables"
@@ -74,7 +64,6 @@ export default function Cleaning() {
             </Table.Cell>
             <Table.Cell>Black</Table.Cell>
             <Table.Cell>Accessories</Table.Cell>
-            <Table.Cell>$99</Table.Cell>
             <Table.Cell>
               <a
                 href="/tables"
