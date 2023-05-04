@@ -1,9 +1,18 @@
 import { ROUTES_PRIVATE } from "@/routes";
+import { useRouter } from 'next/router';
 import { ReactNode } from "react";
 import CollapsibleLink from "./collabsible-link";
 import SidebarLink from "./sidebar-link";
 
+
 export default function Layout({ children }: { children: ReactNode }) {
+  const router = useRouter()
+  console.log(router.asPath)
+
+  const activeRoute = (route: string) => {
+    return router.asPath === route ? 'bg-indigo-300' : ''
+  }
+
   return (
     <main>
       <button
@@ -44,7 +53,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                       {route.children.map((subRoute) => (
                         <li
                           key={subRoute.id}
-                          className="flex items-center w-full  text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                          className={`${activeRoute(subRoute.path)} flex items-center w-full  text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700`}
                         >
                           <SidebarLink key={subRoute.id} {...subRoute} />
                         </li>
@@ -55,7 +64,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               }
 
               return (
-                <li key={route.id}>
+                <li key={route.id} className={`${activeRoute(route.path)}`}>
                   <SidebarLink {...route} />
                 </li>
               );
@@ -65,7 +74,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                className={`${activeRoute("/HELP")} flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group`}
               >
                 <svg
                   aria-hidden="true"
@@ -93,55 +102,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      {/* <div className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </main>
   );
 }
