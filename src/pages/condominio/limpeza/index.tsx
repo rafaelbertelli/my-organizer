@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../../_app";
 
 import Layout from "@/components/layout";
-import Cleaning from "@/components/page/limpeza";
+import Cleaning from "@/components/toPage/limpeza";
 
 const Limpeza: NextPageWithLayout = () => {
   return <Cleaning />;
